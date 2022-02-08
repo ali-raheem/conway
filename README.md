@@ -2,6 +2,8 @@
 
 Conway is a library for [John Conway's Game of Life cellular automaton](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) intended to be lightweight enough to run on modest microcontrollers.
 
+MIT licensed.
+
 ## Features
 * Cells represented by bitfield
 * Choice of Wrap around or closed world topology

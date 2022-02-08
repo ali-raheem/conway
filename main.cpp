@@ -6,8 +6,6 @@
 
 using namespace std;
 
-
-
 int main() {
     uint32_t state[35];
     Conway<uint32_t> gol(state, 35);

@@ -1,3 +1,8 @@
+/*
+Conway is a library for running John Conway's Game of Life
+Copyright Ali Raheem 2022 - https://github.com/ali-raheem/conway
+MIT Licensed
+*/
 #ifndef CONWAY_H
 #define CONWAY_H
 
