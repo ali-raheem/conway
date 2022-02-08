@@ -29,6 +29,7 @@ int main() {
             };
             cout << endl;
         };
+        cout << endl;
         this_thread::sleep_for(chrono::milliseconds(100));
     }
 }
