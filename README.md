@@ -15,7 +15,7 @@ Example usage in `main.cpp` for using on a computer, and for an example on [an a
 
 An example running on an LED matrix...
 
-![An example running on an LED matrix](LED-32x32.gif)
+![An example running on an LED matrix](./images/LED-32x32.gif)
 
 Running in a terminal...
 
