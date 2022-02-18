@@ -74,7 +74,7 @@ void Conway<T>::clear() {
 
 
 template <class T>
-void Conway<T>::updateCellState (uint16_t i, uint16_t j, uint32_t s, uint8_t sum) {
+void Conway<T>::updateCellState (uint16_t i, uint16_t j, T s, uint8_t sum) {
   const T one = 1;
   switch (sum) {
     case 3:
