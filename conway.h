@@ -2,7 +2,6 @@
 Conway is a library for running John Conway's Game of Life
 Copyright Ali Raheem 2022 - https://github.com/ali-raheem/conway
 MIT Licensed
-File version: 6db345b0733da7751e8f3cf59a212976cac4e349 08/02/2022 2020 BST
 */
 
 #ifndef CONWAY_H
@@ -116,22 +115,49 @@ uint16_t Conway<T>::next() {
     bool oldState = (*this.*getCellState)(i, 0);
     uint8_t sum_l = (*this.*getCellState)(i - 1, -1) + (*this.*getCellState)(i, -1) + (*this.*getCellState)(i + 1, -1);
     uint8_t sum_m = (*this.*getCellState)(i - 1, 0) + oldState + (*this.*getCellState)(i + 1, 0);
-    for (j = 0; j < cols; j++) {
-      bool oldStateR = (*this.*getCellState)(i, j + 1);
-      uint8_t sum_r = (*this.*getCellState)(i - 1, j + 1) + oldStateR + (*this.*getCellState)(i + 1, j + 1);
-      uint8_t liveCells = sum_l + sum_m + sum_r;
+    uint8_t sum_r;
+    bool oldStateR;
+    uint8_t liveCells;
+    j = 0;
+    oldStateR = (*this.*getCellState)(i, j + 1);
+    sum_r = (*this.*getCellState)(i - 1, j + 1) + oldStateR + (*this.*getCellState)(i + 1, j + 1);
+    liveCells = sum_l + sum_m + sum_r;
+    state[activeLineBuffer] |= ((T) getNextCellState(oldState, liveCells)) << (sizeof(T)*8 - 1);
+    population += oldState;
+    oldState = oldStateR;
+    sum_l = sum_m;
+    sum_m = sum_r;
+    T prevRow = state[(i == 0)? rows - 1 : i - 1];
+    T currRow = state[i];
+    T nextRow = state[(i + 1) % rows];
+       prevRow >>= 1;
+      currRow >>= 1;
+      nextRow >>= 1;
+    for (j = 1; j < cols - 1; j++) {
+      oldStateR = !!(currRow & 0b10);
+      sum_r = !!(prevRow & 0b10) + oldStateR + !!(nextRow & 0b10);
+      liveCells = sum_l + sum_m + sum_r;
       state[activeLineBuffer] >>= 1;
       state[activeLineBuffer] |= ((T) getNextCellState(oldState, liveCells)) << (sizeof(T)*8 - 1);
       population += oldState;
       oldState = oldStateR;
       sum_l = sum_m;
       sum_m = sum_r;
+      prevRow >>= 1;
+      currRow >>= 1;
+      nextRow >>= 1;
     }
-    activeLineBuffer = rows + (i % 2);
+    oldStateR = (*this.*getCellState)(i, j + 1);
+    sum_r = (*this.*getCellState)(i - 1, j + 1) + oldStateR + (*this.*getCellState)(i + 1, j + 1);
+    liveCells = sum_l + sum_m + sum_r;
+    state[activeLineBuffer] >>= 1;
+    state[activeLineBuffer] |= ((T) getNextCellState(oldState, liveCells)) << (sizeof(T)*8 - 1);
+    population += oldState;
+    activeLineBuffer = rows + (i & 1);
     if (LIKELY(i > 1))  state[i - 1] = state[activeLineBuffer];
   }
   state[0] = state[rows + 2];
-  state[rows - 1] = state[rows + (rows % 2)];
+  state[rows - 1] = state[rows + (rows & 1)];
   generation++;
   if (UNLIKELY(population == lastPopulation)) {
       staleness++;
