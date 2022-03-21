@@ -2,9 +2,14 @@
 Conway is a library for running John Conway's Game of Life
 Copyright Ali Raheem 2022 - https://github.com/ali-raheem/conway
 MIT Licensed
+File version: 6db345b0733da7751e8f3cf59a212976cac4e349 08/02/2022 2020 BST
 */
+
 #ifndef CONWAY_H
 #define CONWAY_H
+
+#define LIKELY(condition) __builtin_expect(static_cast<bool>(condition), 1)
+#define UNLIKELY(condition) __builtin_expect(static_cast<bool>(condition), 0)
 
 #ifdef __AVR
 #include <stdint.h>
@@ -26,6 +31,7 @@ class Conway {
     void clear();
     bool getCellStateClosed (int i, int j);
     bool getCellStateWrapped (int i, int j);
+    bool getNextCellState (bool s, uint8_t sum);
     void updateCellState (uint16_t i, uint16_t j, uint32_t s, uint8_t sum);
     bool (Conway::*getCellState)(int, int);
   private:
@@ -74,7 +80,7 @@ void Conway<T>::clear() {
 
 
 template <class T>
-void Conway<T>::updateCellState (uint16_t i, uint16_t j, T s, uint8_t sum) {
+void Conway<T>::updateCellState (uint16_t i, uint16_t j, uint32_t s, uint8_t sum) {
   const T one = 1;
   switch (sum) {
     case 3:
@@ -85,6 +91,19 @@ void Conway<T>::updateCellState (uint16_t i, uint16_t j, T s, uint8_t sum) {
       break;
     default:
       state[activeLineBuffer] &= ~(one << j);
+  }
+}
+template <class T>
+bool Conway<T>::getNextCellState (bool s, uint8_t sum) {
+  switch (sum) {
+    case 3:
+      return true;
+      break;
+    case 4:
+      return s;
+      break;
+    default:
+      return false;
   }
 }
 template <class T>
@@ -101,19 +120,20 @@ uint16_t Conway<T>::next() {
       bool oldStateR = (*this.*getCellState)(i, j + 1);
       uint8_t sum_r = (*this.*getCellState)(i - 1, j + 1) + oldStateR + (*this.*getCellState)(i + 1, j + 1);
       uint8_t liveCells = sum_l + sum_m + sum_r;
-      updateCellState(i, j, oldState, liveCells);
+      state[activeLineBuffer] >>= 1;
+      state[activeLineBuffer] |= ((T) getNextCellState(oldState, liveCells)) << (sizeof(T)*8 - 1);
       population += oldState;
       oldState = oldStateR;
       sum_l = sum_m;
       sum_m = sum_r;
     }
     activeLineBuffer = rows + (i % 2);
-    if (i > 1)  state[i - 1] = state[activeLineBuffer];
+    if (LIKELY(i > 1))  state[i - 1] = state[activeLineBuffer];
   }
   state[0] = state[rows + 2];
-  state[rows - 1] = state[rows + (i % 2)];
+  state[rows - 1] = state[rows + (rows % 2)];
   generation++;
-  if (population == lastPopulation) {
+  if (UNLIKELY(population == lastPopulation)) {
       staleness++;
   } else {
       lastPopulation = population;
