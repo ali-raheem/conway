@@ -6,8 +6,8 @@ MIT licensed.
 
 ## Features
 * Cells represented by bitfield
-* Choice of Wrap around or closed world topology
 * Uses 1 framebuffer and 3 line buffers (3 used to allow for wrap around toplogies)
+* Conditional optimzation with `__CONWAY_OPTIMIZE_LARGE` for larger 64x64 boards on `AVR`. 4ms for 32x32 boards on 328p @16MHz and 75ms on 64x64.
 
 ## Usage
 
