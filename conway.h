@@ -2,7 +2,7 @@
 Conway is a library for running John Conway's Game of Life
 Copyright Ali Raheem 2022 - https://github.com/ali-raheem/conway
 MIT Licensed
-File version: 2022-03-22 21:22 GMT
+File version: 2022-03-23 21:41 GMT
 */
 
 #ifndef CONWAY_H
@@ -93,22 +93,22 @@ uint16_t Conway<T>::next() {
 //    bool oldState = getCellState(i, 0);
 //    uint8_t sum_m = getCellState(i - 1, 0) + oldState + getCellState(i + 1, 0);
     uint8_t sum_0 = sum_m;
-    uint8_t sum_r;
-    bool oldStateR;
-    uint8_t liveCells;
-    if(prevRow == 0 && currRow == 0 && nextRow == 0)
-      continue;
+//    uint8_t sum_r;
+//    bool oldStateR;
+//    uint8_t liveCells;
+//    if(prevRow == 0 && currRow == 0 && nextRow == 0)
+//      continue;
 #ifdef __CONWAY_OPTIMIZE_LARGE
     prevRow >>= 1;
     currRow >>= 1;
     nextRow >>= 1;
-    oldStateR = !!(currRow & 0b1);
-    sum_r = !!(prevRow & 0b1) + oldStateR + !!(nextRow & 0b1);
+    bool oldStateR = !!(currRow & 0b1);
+    uint8_t sum_r = !!(prevRow & 0b1) + oldStateR + !!(nextRow & 0b1);
 #else
-    oldStateR = getCellState(i, 1);
-    sum_r = getCellState(i - 1, 1) + oldStateR + getCellState(i + 1, 1);
+    bool oldStateR = getCellState(i, 1);
+    uint8_t sum_r = getCellState(i - 1, 1) + oldStateR + getCellState(i + 1, 1);
 #endif
-    liveCells = sum_l + sum_m + sum_r;
+    uint8_t liveCells = sum_l + sum_m + sum_r;
     if(getNextCellState(oldState, liveCells)) {
       T one = 1;
       state[activeLineBuffer] |=  one << (sizeof(T)*8 - 1);
