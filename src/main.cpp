@@ -32,13 +32,13 @@ int main() {
         for (i = 0; i < gol.rows; i++) {
             for (j = 0; j < gol.cols; j++) {
                 bool s = gol.getCellState(i, j);
-                cout << (s ? " # " : "   ");
+                cout << (s ? "<>" : "  ");
             }
             cout << endl;
         }
         cout << endl;
 
-        // Sleep to slow animation 100 gives 10fps
-        this_thread::sleep_for(chrono::milliseconds(100));
+        // Sleep to slow animation 200 gives 5fps
+        this_thread::sleep_for(chrono::milliseconds(200));
     }
 }
