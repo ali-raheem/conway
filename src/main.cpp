@@ -1,3 +1,10 @@
+/*
+main.cpp
+Conway is a library for running John Conway's Game of Life
+Copyright Ali Raheem 2022 - 2024 - https://github.com/ali-raheem/conway
+MIT Licensed
+File version: 2024-10-20 19:00 GMT
+*/
 #include <iostream>
 #include <chrono>
 #include <thread>
