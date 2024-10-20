@@ -2,6 +2,7 @@
 #include <chrono>
 #include <thread>
 
+// Include necessary headers
 #include "conway.h"
 
 using namespace std;
@@ -18,16 +19,20 @@ int main() {
     state[9] = 0x70;
 
     while (true) {
+      cout << "\033[2J\033[H"; // Clear screen
+
         gol.next();
         uint8_t i, j;
-        for(i = 0; i < 32; i++) {
-            for(j = 0; j < 32; j++) {
-                bool s = (gol.*(gol.getCellState))(i, j);
+        for (i = 0; i < gol.rows; i++) {
+            for (j = 0; j < gol.cols; j++) {
+                bool s = gol.getCellState(i, j);
                 cout << (s ? " # " : " - ");
-            };
+            }
             cout << endl;
-        };
+        }
         cout << endl;
-        this_thread::sleep_for(chrono::milliseconds(100));
+
+	// Slow output
+        this_thread::sleep_for(chrono::milliseconds(200));
     }
 }

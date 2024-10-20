@@ -30,11 +30,11 @@ class Conway {
     uint16_t next();
     void clear();
     bool getNextCellState (bool s, uint8_t sum);
+    bool getCellState(uint8_t i, uint8_t j); // Add this line
   private:
     uint8_t lastPopulation;
     const uint8_t MSB = sizeof(T)*8 - 1;
 };
-
 
 template <class T>
 Conway<T>::Conway(T* buffer, uint8_t length) {
@@ -64,6 +64,15 @@ bool Conway<T>::getNextCellState (bool s, uint8_t sum) {
       return false;
   }
 }
+
+template <class T>
+bool Conway<T>::getCellState(uint8_t i, uint8_t j) {
+    if (i >= rows || j >= cols) {
+        return false; // Handle out-of-bounds access as needed
+    }
+    return (state[i] >> j) & 1;
+}
+
 template <class T>
 uint16_t Conway<T>::next() {
   population = 0;

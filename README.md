@@ -9,6 +9,12 @@ MIT licensed.
 * Uses 1 framebuffer and 3 line buffers (3 used to allow for wrap around toplogies)
 * Conditional optimzation with `__CONWAY_OPTIMIZE_LARGE` for larger 64x64 boards on `AVR`. 4ms for 32x32 boards on 328p @16MHz and 75ms on 64x64.
 
+## Compilation
+
+```
+g++ -O3 -o conway src/main.cpp
+```
+
 ## Usage
 
 Example usage in `main.cpp` for using on a computer, and for an example on [an arduino](https://github.com/ali-raheem/game_of_life).
