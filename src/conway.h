@@ -2,11 +2,10 @@
 Conway is a library for running John Conway's Game of Life
 Copyright Ali Raheem 2022 - 2024 - https://github.com/ali-raheem/conway
 MIT Licensed
-File version: 2024-10-20 19:00 GMT
+File version: 2024-10-21 19:29 GMT
 */
 
-#ifndef CONWAY_H
-#define CONWAY_H
+#pragma once
 
 #define LIKELY(condition) __builtin_expect(static_cast<bool>(condition), 1)
 #define UNLIKELY(condition) __builtin_expect(static_cast<bool>(condition), 0)
@@ -30,7 +29,7 @@ class Conway {
     uint16_t next();
     void clear();
     bool getNextCellState (bool s, uint8_t sum);
-    bool getCellState(uint8_t i, uint8_t j); // Add this line
+    bool getCellState(uint8_t i, uint8_t j);
   private:
     uint8_t lastPopulation;
     const uint8_t MSB = sizeof(T)*8 - 1;
@@ -68,7 +67,7 @@ bool Conway<T>::getNextCellState (bool s, uint8_t sum) {
 template <class T>
 bool Conway<T>::getCellState(uint8_t i, uint8_t j) {
     if (i >= rows || j >= cols) {
-        return false; // Handle out-of-bounds access as needed
+        return false;
     }
     return (state[i] >> j) & 1;
 }
@@ -142,5 +141,3 @@ uint16_t Conway<T>::next() {
   }
   return population;
 }
-
-#endif
