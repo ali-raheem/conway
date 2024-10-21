@@ -15,7 +15,15 @@ MIT licensed.
 g++ -O3 -o conway src/main.cpp
 ```
 
+I'd suggest using profiled optimization.
+
 ## Usage
+
+```
+conway -s [int max stale generations] -d [str for dead cell] -a [str for living cell] -p [milisecond delay]
+
+conway -s 10 -d "   " -a "<#>" -p 10
+```
 
 Example usage in `main.cpp` for using on a computer, and for an example on [an arduino](https://github.com/ali-raheem/game_of_life).
 
